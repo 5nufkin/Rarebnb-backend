@@ -18,19 +18,19 @@ export async function login(req, res) {
 }
 
 export async function signup(req, res) {
+  const {
+    fullname,
+    username,
+    password,
+    imgUrl = "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747478520/user_yb3tnn.png"
+  } = req.body
+
+  const credentials = { fullname, username, password, imgUrl }
+
+  // Never log passwords
+  // logger.debug(credentials)
+
   try {
-    const {
-      fullname,
-      username,
-      password,
-      imgUrl = "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747478520/user_yb3tnn.png"
-    } = req.body
-
-    const credentials = { fullname, username, password, imgUrl }
-
-    // Never log passwords
-    // logger.debug(credentials)
-
     const account = await authService.signup(credentials)
     logger.debug(`auth.route - new account created: ` + JSON.stringify(account))
 

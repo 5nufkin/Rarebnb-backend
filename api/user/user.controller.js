@@ -1,6 +1,6 @@
 import { userService } from './user.service.js'
 import { logger } from '../../services/logger.service.js'
-import { socketService } from '../../services/socket.service.js'
+import bcrypt from 'bcrypt'
 
 export async function getUser(req, res) {
   try {
@@ -48,12 +48,23 @@ export async function updateUser(req, res) {
 }
 
 export async function addUser(req, res) {
+  const saltRounds = 10
+  const user = req.body
+
+  const userToAdd = {
+    fullname: user.fullname,
+    username: user.username,
+    imgUrl: user.imgUrl,
+    isAdmin: user.isAdmin
+  }
+  const hash = await bcrypt.hash(user.password, saltRounds)
+  userToAdd.password = hash
+
   try {
-    const user = req.body
-    const addedUser = await userService.add(user)
+    const addedUser = await userService.add(userToAdd)
     res.json(addedUser)
   } catch (err) {
-    loggerService.error('Failed to add user', err)
-    res.status(500).send({ err: 'Failed to add user' })
+    logger.error('Failed to add user', err)
+    res.status(400).send({ err: 'Failed to add user' })
   }
 }

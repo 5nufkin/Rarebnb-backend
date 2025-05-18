@@ -7,19 +7,19 @@
 	},
 	"item": [
 		{
-			"name": "Cars",
+			"name": "Stays",
 			"item": [
 				{
 					"name": "Msgs",
 					"item": [
 						{
-							"name": "Add Car Msg",
+							"name": "Add Stay Msg",
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"txt\": \"Like this car\"\n}",
+									"raw": "{\n    \"txt\": \"Like this stay\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -27,7 +27,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3030/api/car/669145477ed386ad1a905074/msg",
+									"raw": "http://localhost:3030/api/stay/669145477ed386ad1a905074/msg",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -35,7 +35,7 @@
 									"port": "3030",
 									"path": [
 										"api",
-										"car",
+										"stay",
 										"669145477ed386ad1a905074",
 										"msg"
 									]
@@ -44,13 +44,13 @@
 							"response": []
 						},
 						{
-							"name": "Remove Car Msg",
+							"name": "Remove Stay Msg",
 							"request": {
 								"method": "DELETE",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"txt\": \"Like this car\"\n}",
+									"raw": "{\n    \"txt\": \"Like this stay\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -58,7 +58,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:3030/api/car/669145477ed386ad1a905074/msg/66HyQ",
+									"raw": "http://localhost:3030/api/stay/669145477ed386ad1a905074/msg/66HyQ",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -66,7 +66,7 @@
 									"port": "3030",
 									"path": [
 										"api",
-										"car",
+										"stay",
 										"669145477ed386ad1a905074",
 										"msg",
 										"66HyQ"
@@ -78,12 +78,12 @@
 					]
 				},
 				{
-					"name": "Get Cars",
+					"name": "Get Stays",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3030/api/car/",
+							"raw": "http://localhost:3030/api/stay/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -91,7 +91,7 @@
 							"port": "3030",
 							"path": [
 								"api",
-								"car",
+								"stay",
 								""
 							]
 						}
@@ -99,12 +99,12 @@
 					"response": []
 				},
 				{
-					"name": "Get Car",
+					"name": "Get Stay",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3030/api/car/658c02a1cce9d0d09bcabe8e",
+							"raw": "http://localhost:3030/api/stay/658c02a1cce9d0d09bcabe8e",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -112,7 +112,7 @@
 							"port": "3030",
 							"path": [
 								"api",
-								"car",
+								"stay",
 								"658c02a1cce9d0d09bcabe8e"
 							]
 						}
@@ -120,12 +120,12 @@
 					"response": []
 				},
 				{
-					"name": "Delete Car",
+					"name": "Delete Stay",
 					"request": {
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:3030/api/car/658c02a1cce9d0d09bcabe8e",
+							"raw": "http://localhost:3030/api/stay/658c02a1cce9d0d09bcabe8e",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -133,7 +133,7 @@
 							"port": "3030",
 							"path": [
 								"api",
-								"car",
+								"stay",
 								"658c02a1cce9d0d09bcabe8e"
 							]
 						}
@@ -141,13 +141,13 @@
 					"response": []
 				},
 				{
-					"name": "Add Car",
+					"name": "Add Stay",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vendor\": \"Subali\",\n    \"speed\": 100,\n    }",
+							"raw": "{\n    \"name\": \"Subali\",\n    \"speed\": 100,\n    }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -155,7 +155,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3030/api/car",
+							"raw": "http://localhost:3030/api/stay",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -163,20 +163,20 @@
 							"port": "3030",
 							"path": [
 								"api",
-								"car"
+								"stay"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update Car",
+					"name": "Update Stay",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"vendor\": \"Subali\",\n    \"speed\": 100,\n      \"_id\": \"669145477ed386ad1a905074\"\n}",
+							"raw": "{\n    \"name\": \"Subali\",\n    \"speed\": 100,\n      \"_id\": \"669145477ed386ad1a905074\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -184,7 +184,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:3030/api/car/669145477ed386ad1a905074",
+							"raw": "http://localhost:3030/api/stay/669145477ed386ad1a905074",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -192,7 +192,7 @@
 							"port": "3030",
 							"path": [
 								"api",
-								"car",
+								"stay",
 								"669145477ed386ad1a905074"
 							]
 						}

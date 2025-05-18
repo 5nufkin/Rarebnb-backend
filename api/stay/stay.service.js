@@ -74,6 +74,8 @@ async function remove(stayId) {
 }
 
 async function add(stay) {
+
+  console.log('STAY:', stay)
   try {
     const collection = await dbService.getCollection('stay')
     await collection.insertOne(stay)
@@ -86,16 +88,25 @@ async function add(stay) {
 }
 
 async function update(stay) {
-  console.log(stay)
-  const stayToSave = { name: stay.name }
+  const stayToSave = {
+    name: stay.name,
+    type: stay.type,
+    price: stay.price,
+    summary: stay.summary,
+    capacity: stay.capacity,
+    bedCount: stay.bedCount,
+    labels: stay.labels,
+    amenities: stay.amenities,
+    loc: stay.loc,
+    imgUrls: stay.imgUrls,
+  }
+
+  const criteria = { _id: ObjectId.createFromHexString(stay._id) }
+  const collection = await dbService.getCollection('stay')
 
   try {
-    const criteria = { _id: ObjectId.createFromHexString(stay._id) }
-
-    const collection = await dbService.getCollection('stay')
     await collection.updateOne(criteria, { $set: stayToSave })
-
-    return stay
+    return { stayToSave, _id: criteria._id }
   } catch (err) {
     logger.error(`cannot update stay ${stay._id}`, err)
     throw err
@@ -134,7 +145,6 @@ async function removeStayMsg(stayId, msgId) {
 function _buildCriteria(filterBy) {
   const criteria = {
     name: { $regex: filterBy.txt, $options: 'i' },
-    speed: { $gte: filterBy.minSpeed },
   }
 
   return criteria

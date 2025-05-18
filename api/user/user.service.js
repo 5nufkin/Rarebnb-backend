@@ -79,7 +79,6 @@ async function remove(userId) {
 }
 
 async function update(user) {
-  console.log(user)
   try {
     const userToSave = {
       _id: ObjectId.createFromHexString(user._id),
@@ -97,14 +96,19 @@ async function update(user) {
 }
 
 async function add(user) {
+  const userToAdd = {
+    username: user.username,
+    password: user.password,
+    fullname: user.fullname,
+    imgUrl: user.imgUrl,
+    isAdmin: user.isAdmin || false,
+  }
+  console.log('USER TO ADD:', userToAdd)
+
   try {
-    const userToAdd = {
-      username: user.username,
-      password: user.password,
-      fullname: user.fullname,
-      imgUrl: user.imgUrl,
-      isAdmin: user.isAdmin,
-    }
+    const userExist = await userService.getByUsername(userToAdd.username)
+    if (userExist) return Promise.reject('Username already taken')
+
     const collection = await dbService.getCollection('user')
     await collection.insertOne(userToAdd)
     return userToAdd
