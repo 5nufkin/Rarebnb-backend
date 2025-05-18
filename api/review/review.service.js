@@ -56,14 +56,14 @@ async function query(filterBy = {}) {
 
 async function remove(reviewId) {
 	try {
-		const { loggedinUser } = asyncLocalStorage.getStore()
+		const { loggedInUser } = asyncLocalStorage.getStore()
 		const collection = await dbService.getCollection('review')
 
 		const criteria = { _id: ObjectId.createFromHexString(reviewId) }
 
         // remove only if user is owner/admin
-		if (!loggedinUser.isAdmin) {
-            criteria.byUserId = ObjectId.createFromHexString(loggedinUser._id)
+		if (!loggedInUser.isAdmin) {
+            criteria.byUserId = ObjectId.createFromHexString(loggedInUser._id)
         }
 
         const { deletedCount } = await collection.deleteOne(criteria)

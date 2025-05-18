@@ -1,6 +1,6 @@
 import { httpService } from './http.service.js'
 
-const STORAGE_KEY_LOGGEDIN_USER = 'loggedinUser'
+const STORAGE_KEY_LOGGEDIN_USER = 'loggedInUser'
 
 export const userService = {
     login,
@@ -58,7 +58,7 @@ async function logout() {
 
 async function changeScore(by) {
     const user = getLoggedinUser()
-    if (!user) throw new Error('Not loggedin')
+    if (!user) throw new Error('Not loggedIn')
     user.score = user.score + by || by
     await update(user)
     return user.score

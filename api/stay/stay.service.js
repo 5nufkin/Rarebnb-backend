@@ -53,8 +53,8 @@ async function getById(stayId) {
 }
 
 async function remove(stayId) {
-  const { loggedinUser } = asyncLocalStorage.getStore()
-  const { _id: hostId, isAdmin } = loggedinUser
+  const { loggedInUser } = asyncLocalStorage.getStore()
+  const { _id: hostId, isAdmin } = loggedInUser
 
   try {
     const criteria = {
@@ -75,7 +75,6 @@ async function remove(stayId) {
 
 async function add(stay) {
 
-  console.log('STAY:', stay)
   try {
     const collection = await dbService.getCollection('stay')
     await collection.insertOne(stay)
@@ -102,9 +101,9 @@ async function update(stay) {
   }
 
   const criteria = { _id: ObjectId.createFromHexString(stay._id) }
-  const collection = await dbService.getCollection('stay')
 
   try {
+    const collection = await dbService.getCollection('stay')
     await collection.updateOne(criteria, { $set: stayToSave })
     return { stayToSave, _id: criteria._id }
   } catch (err) {

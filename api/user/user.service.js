@@ -103,7 +103,6 @@ async function add(user) {
     imgUrl: user.imgUrl,
     isAdmin: user.isAdmin || false,
   }
-  console.log('USER TO ADD:', userToAdd)
 
   try {
     const userExist = await userService.getByUsername(userToAdd.username)

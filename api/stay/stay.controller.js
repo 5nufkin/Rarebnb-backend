@@ -29,7 +29,7 @@ export async function getStayById(req, res) {
 }
 
 export async function addStay(req, res) {
-  const { loggedinUser, body } = req
+  const { loggedInUser, body } = req
   const stay = {
     name: body.name,
     type: body.type,
@@ -42,7 +42,7 @@ export async function addStay(req, res) {
     labels: body.labels,
     loc: body.loc,
   }
-  stay.host = loggedinUser
+  stay.host = loggedInUser
 
   try {
     const addedStay = await stayService.add(stay)
@@ -54,9 +54,8 @@ export async function addStay(req, res) {
 }
 
 export async function updateStay(req, res) {
-  const { loggedinUser, body: stay } = req
-  const { _id: userId, isAdmin } = loggedinUser
-
+  const { loggedInUser, body: stay } = req
+  const { _id: userId, isAdmin } = loggedInUser
 
   if (!isAdmin && stay.host._id !== userId) {
     res.status(403).send('Not your stay...')
@@ -85,13 +84,13 @@ export async function removeStay(req, res) {
 }
 
 export async function addStayMsg(req, res) {
-  const { loggedinUser } = req
+  const { loggedInUser } = req
 
   try {
     const stayId = req.params.id
     const msg = {
       txt: req.body.txt,
-      by: loggedinUser,
+      by: loggedInUser,
     }
     const savedMsg = await stayService.addStayMsg(stayId, msg)
     res.json(savedMsg)

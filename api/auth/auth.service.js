@@ -14,7 +14,6 @@ export const authService = {
 }
 
 async function login(username, password) {
-  console.log(username, password)
   logger.debug(`auth.service - login with username: ${username}`)
 
   const user = await userService.getByUsername(username)
@@ -25,9 +24,7 @@ async function login(username, password) {
   if (!match) return Promise.reject('Invalid username or password')
 
   delete user.password
-  console.log('BEFORE', user._id)
   user._id = user._id.toString()
-  console.log('AFTER', user._id)
   return user
 }
 
@@ -57,8 +54,8 @@ function getLoginToken(user) {
 function validateToken(loginToken) {
   try {
     const json = cryptr.decrypt(loginToken)
-    const loggedinUser = JSON.parse(json)
-    return loggedinUser
+    const loggedInUser = JSON.parse(json)
+    return loggedInUser
   } catch (err) {
     console.log('Invalid login token')
   }
