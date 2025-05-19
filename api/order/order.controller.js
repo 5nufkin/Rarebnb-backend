@@ -31,7 +31,6 @@ export async function getOrderById(req, res) {
 export async function addOrder(req, res) {
   const { loggedInUser } = req
   const order = req.body
-  console.log(order)
 
   try {
     const addedOrder = await orderService.add(order, loggedInUser)

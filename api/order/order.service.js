@@ -75,18 +75,14 @@ async function remove(orderId) {
 }
 
 async function add(order, loggedInUser) {
-  const { stay, startDate, endDate, guests: guestCountMap, totalPrice } = order
-  console.log('SERVICE:', order)
-  const existingStay = await stayService.getById(stay._id)
+  const { stayId, startDate, endDate, guestCountMap, totalPrice } = order
+  const existingStay = await stayService.getById(stayId)
 
   //////////////////////////////////////////////! only until we have frontend users:
   if (!loggedInUser) {
     const collection = await dbService.getCollection('user')
-    const user = await collection.findOne({ _id: ObjectId.createFromHexString('6828ae1ccc805aefb7c23ca7') })
-    loggedInUser = user
+    loggedInUser = await collection.findOne({ _id: ObjectId.createFromHexString('6828ae1ccc805aefb7c23ca7') })
   }
-
-  console.log('existingStay:', existingStay)
 
   const orderToAdd = {
     host: {
