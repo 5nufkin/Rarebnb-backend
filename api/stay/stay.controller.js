@@ -41,6 +41,9 @@ export async function addStay(req, res) {
     amenities: body.amenities,
     labels: body.labels,
     loc: body.loc,
+    avgRating: 0,
+    reviews: [],
+    likedByUsers: []
   }
   stay.host = loggedInUser
 

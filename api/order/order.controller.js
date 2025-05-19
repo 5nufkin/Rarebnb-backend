@@ -31,6 +31,7 @@ export async function getOrderById(req, res) {
 export async function addOrder(req, res) {
   const { loggedInUser } = req
   const order = req.body
+  console.log(order)
 
   try {
     const addedOrder = await orderService.add(order, loggedInUser)
@@ -48,7 +49,7 @@ export async function updateOrder(req, res) {
   if (!isAdmin && order.host._id !== userId && order.guest._id !== userId) {
     res.status(403).send('Not your order...')
     return
-  } 
+  }
 
   try {
     const updatedOrder = await orderService.update(order, loggedInUser)

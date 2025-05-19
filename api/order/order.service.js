@@ -75,14 +75,24 @@ async function remove(orderId) {
 }
 
 async function add(order, loggedInUser) {
-  const { stayId, startDate, endDate, guests: guestCountMap, totalPrice } = order
-  const stay = await stayService.getById(stayId)
+  const { stay, startDate, endDate, guests: guestCountMap, totalPrice } = order
+  console.log('SERVICE:', order)
+  const existingStay = await stayService.getById(stay._id)
+
+  //////////////////////////////////////////////! only until we have frontend users:
+  if (!loggedInUser) {
+    const collection = await dbService.getCollection('user')
+    const user = await collection.findOne({ _id: ObjectId.createFromHexString('6828ae1ccc805aefb7c23ca7') })
+    loggedInUser = user
+  }
+
+  console.log('existingStay:', existingStay)
 
   const orderToAdd = {
     host: {
-      _id: stay.host._id,
-      fullname: stay.host.fullname,
-      imgUrl: stay.host.imgUrl
+      _id: existingStay.host._id,
+      fullname: existingStay.host.fullname,
+      imgUrl: existingStay.host.imgUrl
     },
     guest: {
       _id: loggedInUser._id,
@@ -93,9 +103,9 @@ async function add(order, loggedInUser) {
     endDate,
     guestCountMap,
     stay: {
-      _id: stay._id,
-      name: stay.name,
-      price: stay.price
+      _id: existingStay._id,
+      name: existingStay.name,
+      price: existingStay.price
     },
     msgs: [],
     status: 'pending'
@@ -123,7 +133,7 @@ async function update(order, loggedInUser) {
 
     if (existingOrder.status !== 'pending') {
       logger.error(`cannot update processed order ${order._id}`)
-      throw new Error (`Can't update order`)
+      throw new Error(`Can't update order`)
     }
 
     const orderToSave = { status, msgs }

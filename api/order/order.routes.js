@@ -8,7 +8,7 @@ import { getOrders, getOrderById, addOrder, updateOrder, removeOrder, addOrderMs
 const router = express.Router()
 
 // We can add a middleware for the entire router:
-router.use(requireAuth)
+// router.use(requireAuth)
 
 router.get('/', log, getOrders)
 router.get('/:id', log, getOrderById)
