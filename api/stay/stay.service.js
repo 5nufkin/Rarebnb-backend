@@ -5,7 +5,7 @@ import { makeId } from '../../services/util.service.js'
 import { dbService } from '../../services/db.service.js'
 import { asyncLocalStorage } from '../../services/als.service.js'
 
-const PAGE_SIZE = 3
+const PAGE_SIZE = 6
 
 export const stayService = {
   remove,
@@ -17,20 +17,29 @@ export const stayService = {
   removeStayMsg,
 }
 
-async function query(filterBy = { txt: '' }) {
+async function query(filterBy = {}) {
+  const criteria = _buildCriteria(filterBy)
+  const sort = _buildSort(filterBy)
+
   try {
-    const criteria = _buildCriteria(filterBy)
-    const sort = _buildSort(filterBy)
-
     const collection = await dbService.getCollection('stay')
-    var stayCursor = await collection.find(criteria, { sort })
+    const totalCount = await collection.countDocuments(criteria)
+    const pageIdx = +filterBy.pageIdx || 0
 
-    if (filterBy.pageIdx !== undefined) {
-      stayCursor.skip(filterBy.pageIdx * PAGE_SIZE).limit(PAGE_SIZE)
+    // var stayCursor = await collection.find(criteria, { sort })
+
+    const stays = await collection.find(criteria).sort(sort).skip(pageIdx * PAGE_SIZE).limit(PAGE_SIZE).toArray()
+
+    // if (filterBy.pageIdx !== undefined) {
+    //   stayCursor.skip(filterBy.pageIdx * PAGE_SIZE).limit(PAGE_SIZE)
+    // }
+
+    // const stays = stayCursor.toArray()
+    console.log(stays)
+    // return stays
+    return {
+      stays, totalCount, totalPages: Math.ceil(totalCount / PAGE_SIZE), pageIdx
     }
-
-    const stays = stayCursor.toArray()
-    return stays
   } catch (err) {
     logger.error('cannot find stays', err)
     throw err
@@ -142,10 +151,9 @@ async function removeStayMsg(stayId, msgId) {
 }
 
 function _buildCriteria(filterBy) {
-  const criteria = {
-    name: { $regex: filterBy.txt, $options: 'i' },
-  }
-
+  const criteria = {}
+  if (filterBy.country) criteria['loc.country'] = { $regex: filterBy.country, $options: 'i' }
+  console.log(criteria)
   return criteria
 }
 

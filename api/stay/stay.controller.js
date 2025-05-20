@@ -2,12 +2,16 @@ import { logger } from '../../services/logger.service.js'
 import { stayService } from './stay.service.js'
 
 export async function getStays(req, res) {
+  console.log('req.query:', req.query)
   const filterBy = {
-    txt: req.query.txt || '',
-    sortField: req.query.sortField || '',
-    sortDir: req.query.sortDir || 1,
+    // txt: req.query.txt || '',
+    // sortField: req.query.sortField || '',
+    // sortDir: req.query.sortDir || 1,
     pageIdx: req.query.pageIdx,
+    country: req.query.country
   }
+  console.log(filterBy)
+
   try {
     const stays = await stayService.query(filterBy)
     res.json(stays)
