@@ -18,13 +18,13 @@ export const orderService = {
   removeOrderMsg,
 }
 
-async function query(filterBy = { txt: '' }) {
-  try {
-    const criteria = _buildCriteria(filterBy)
-    const sort = _buildSort(filterBy)
+async function query(filterBy = {}) {
+  const criteria = _buildCriteria(filterBy)
+  // const sort = _buildSort(filterBy)
 
+  try {
     const collection = await dbService.getCollection('order')
-    var orderCursor = await collection.find(criteria, { sort })
+    var orderCursor = await collection.find(criteria)
 
     if (filterBy.pageIdx !== undefined) {
       orderCursor.skip(filterBy.pageIdx * PAGE_SIZE).limit(PAGE_SIZE)
@@ -179,9 +179,16 @@ async function removeOrderMsg(orderId, msgId) {
 }
 
 function _buildCriteria(filterBy) {
-  const criteria = {
-    // name: { $regex: filterBy.txt, $options: 'i' },
+  const criteria = {}
+  const { guestId, hostId } = filterBy
+
+  if (guestId) {
+    criteria['guest._id'] = ObjectId.createFromHexString(guestId)
   }
+  if (hostId) {
+    criteria['host._id'] = ObjectId.createFromHexString(hostId)
+  }
+  console.log('criteria', criteria)
 
   return criteria
 }

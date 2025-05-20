@@ -2,12 +2,13 @@ import { logger } from '../../services/logger.service.js'
 import { orderService } from './order.service.js'
 
 export async function getOrders(req, res) {
-  const filterBy = {
-    txt: req.query.txt || '',
-    // sortField: req.query.sortField || '',
-    // sortDir: req.query.sortDir || 1,
-    // pageIdx: req.query.pageIdx,
-  }
+  console.log('here')
+  const { guestId, hostId } = req.query
+  const filterBy = {}
+  if (guestId) filterBy.guestId = guestId
+  if (hostId) filterBy.hostId = hostId
+  console.log(filterBy)
+
   try {
     const orders = await orderService.query(filterBy)
     res.json(orders)
