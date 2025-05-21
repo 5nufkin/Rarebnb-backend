@@ -1,13 +1,12 @@
 import { logger } from '../../services/logger.service.js'
+import { socketService } from '../../services/socket.service.js'
 import { orderService } from './order.service.js'
 
 export async function getOrders(req, res) {
-  console.log('here')
   const { guestId, hostId } = req.query
   const filterBy = {}
   if (guestId) filterBy.guestId = guestId
   if (hostId) filterBy.hostId = hostId
-  console.log(filterBy)
 
   try {
     const orders = await orderService.query(filterBy)
@@ -35,6 +34,8 @@ export async function addOrder(req, res) {
 
   try {
     const addedOrder = await orderService.add(order, loggedInUser)
+    const hostId = addedOrder.host._id
+    socketService.broadcast({ type: 'order-added', data: addedOrder, room: hostId })
     res.json(addedOrder)
   } catch (err) {
     logger.error('Failed to add order', err)
@@ -52,8 +53,13 @@ export async function updateOrder(req, res) {
   }
 
   try {
-    const updatedOrder = await orderService.update(order, loggedInUser)
+    const { updatedOrder, statusChanged } = await orderService.update(order, loggedInUser)
+    console.log('updatedOrder:', updatedOrder)
+    console.log('statusChanged:', statusChanged)
     res.json(updatedOrder)
+    if (statusChanged) {
+      socketService.broadcast({ type: 'status-changed', data: updatedOrder, room: updatedOrder.guest._id })
+    }
   } catch (err) {
     logger.error('Failed to update order', err)
     res.status(400).send({ err: 'Failed to update order' })

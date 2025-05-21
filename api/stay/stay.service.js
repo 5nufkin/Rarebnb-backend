@@ -35,7 +35,6 @@ async function query(filterBy = {}) {
     // }
 
     // const stays = stayCursor.toArray()
-    console.log(stays)
     // return stays
     return {
       stays, totalCount, totalPages: Math.ceil(totalCount / PAGE_SIZE), pageIdx
@@ -114,7 +113,7 @@ async function update(stay) {
   try {
     const collection = await dbService.getCollection('stay')
     await collection.updateOne(criteria, { $set: stayToSave })
-    return { stayToSave, _id: criteria._id }
+    return { stayToSave, _id: criteria._id } //todo - maybe change to return the whole stay, like we did with order updates
   } catch (err) {
     logger.error(`cannot update stay ${stay._id}`, err)
     throw err
@@ -153,7 +152,6 @@ async function removeStayMsg(stayId, msgId) {
 function _buildCriteria(filterBy) {
   const criteria = {}
   if (filterBy.country) criteria['loc.country'] = { $regex: filterBy.country, $options: 'i' }
-  console.log(criteria)
   return criteria
 }
 

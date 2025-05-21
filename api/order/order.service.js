@@ -26,11 +26,11 @@ async function query(filterBy = {}) {
     const collection = await dbService.getCollection('order')
     var orderCursor = await collection.find(criteria)
 
-    if (filterBy.pageIdx !== undefined) {
-      orderCursor.skip(filterBy.pageIdx * PAGE_SIZE).limit(PAGE_SIZE)
-    }
+    // if (filterBy.pageIdx !== undefined) {
+    //   orderCursor.skip(filterBy.pageIdx * PAGE_SIZE).limit(PAGE_SIZE)
+    // }
 
-    const orders = orderCursor.toArray()
+    const orders = await orderCursor.toArray()
     return orders
   } catch (err) {
     logger.error('cannot find orders', err)
@@ -92,7 +92,8 @@ async function add(order, loggedInUser) {
     },
     guest: {
       _id: loggedInUser._id,
-      fullname: loggedInUser.fullname
+      fullname: loggedInUser.fullname,
+      imgUrl: loggedInUser.imgUrl
     },
     totalPrice,
     startDate,
@@ -132,6 +133,7 @@ async function update(order, loggedInUser) {
       throw new Error(`Can't update order`)
     }
 
+    const prevStatus = existingOrder.status
     const orderToSave = { status, msgs }
 
     if (loggedInUser.isAdmin || loggedInUser._id === existingOrder.guest._id) {
@@ -142,7 +144,11 @@ async function update(order, loggedInUser) {
     }
 
     await collection.updateOne(criteria, { $set: orderToSave })
-    return { orderToSave, _id: criteria._id }
+    const updatedOrder = await collection.findOne(criteria)
+    return {
+      updatedOrder,
+      statusChanged: prevStatus !== status
+    }
   } catch (err) {
     logger.error(`cannot update order ${order._id}`, err)
     throw err
@@ -183,12 +189,11 @@ function _buildCriteria(filterBy) {
   const { guestId, hostId } = filterBy
 
   if (guestId) {
-    criteria['guest._id'] = ObjectId.createFromHexString(guestId)
+    criteria['guest._id'] = guestId
   }
   if (hostId) {
-    criteria['host._id'] = ObjectId.createFromHexString(hostId)
+    criteria['host._id'] = hostId
   }
-  console.log('criteria', criteria)
 
   return criteria
 }
