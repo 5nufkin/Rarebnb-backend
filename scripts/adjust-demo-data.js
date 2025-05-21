@@ -2,56 +2,64 @@ import fs from 'fs'
 import { getRandomInt, makeId } from '../services/util.service.js'
 
 
+// const hostOptions = [
+//   {
+//     _id: '6828af87cc805aefb7c23ca9',
+//     fullname: 'Ella Parker',
+//     imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401978/daniil-lobachev-yqJ0f1CCXso-unsplash_y91bwr.jpg'
+//   },
+//   {
+//     _id: '6828afaecc805aefb7c23caa',
+//     fullname: 'Daniel Miller',
+//     imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401792/28_b7n8d7.jpg'
+//   },
+//   {
+//     _id: '6828afdecc805aefb7c23cab',
+//     fullname: 'Ashley Davis',
+//     imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401822/stefan-stefancik-QXevDflbl8A-unsplash_nyr7ad.jpg'
+//   },
+//   {
+//     _id: "6828b01dcc805aefb7c23cad",
+//     fullname: "Olivia Anderson",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401793/62_ubvjs7.jpg"
+//   },
+//   {
+//     _id: "6828b030cc805aefb7c23cae",
+//     fullname: "David Thomas",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401812/philip-martin-5aGUyCW_PJw-unsplash_ravza9.jpg"
+//   },
+//   {
+//     _id: "6828b000cc805aefb7c23cac",
+//     fullname: "James Wilson",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401793/81_wagqyt.jpg"
+//   },
+//   {
+//     _id: "682b0c2ea072642541d9886e",
+//     fullname: "Owen Lee",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/85_xfv3d7.jpg"
+//   },
+//   {
+//     _id: "682b0c4fa072642541d9886f",
+//     fullname: "Nora Dean",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/41_nbsqbs.jpg"
+//   },
+//   {
+//     _id: "682b0c6aa072642541d98870",
+//     fullname: "Ruby Gale",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/9_nt9iiz.jpg"
+//   },
+//   {
+//     _id: "682b0ca4a072642541d98871",
+//     fullname: "Sam Blake",
+//     imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/36_scjeww.jpg"
+//   }
+// ]
+
 const hostOptions = [
   {
-    _id: '6828af87cc805aefb7c23ca9',
-    fullname: 'Ella Parker',
-    imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401978/daniil-lobachev-yqJ0f1CCXso-unsplash_y91bwr.jpg'
-  },
-  {
-    _id: '6828afaecc805aefb7c23caa',
-    fullname: 'Daniel Miller',
-    imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401792/28_b7n8d7.jpg'
-  },
-  {
-    _id: '6828afdecc805aefb7c23cab',
-    fullname: 'Ashley Davis',
-    imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401822/stefan-stefancik-QXevDflbl8A-unsplash_nyr7ad.jpg'
-  },
-  {
-    _id: "6828b01dcc805aefb7c23cad",
-    fullname: "Olivia Anderson",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401793/62_ubvjs7.jpg"
-  },
-  {
-    _id: "6828b030cc805aefb7c23cae",
-    fullname: "David Thomas",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401812/philip-martin-5aGUyCW_PJw-unsplash_ravza9.jpg"
-  },
-  {
-    _id: "6828b000cc805aefb7c23cac",
-    fullname: "James Wilson",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747401793/81_wagqyt.jpg"
-  },
-  {
-    _id: "682b0c2ea072642541d9886e",
-    fullname: "Owen Lee",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/85_xfv3d7.jpg"
-  },
-  {
-    _id: "682b0c4fa072642541d9886f",
-    fullname: "Nora Dean",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/41_nbsqbs.jpg"
-  },
-  {
-    _id: "682b0c6aa072642541d98870",
-    fullname: "Ruby Gale",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/9_nt9iiz.jpg"
-  },
-  {
-    _id: "682b0ca4a072642541d98871",
-    fullname: "Sam Blake",
-    imgUrl: "https://res.cloudinary.com/dbbj46yzt/image/upload/v1747651393/36_scjeww.jpg"
+    _id: '682e170aa62e757bb191979c',
+    fullname: 'John Doe',
+    imgUrl: 'https://res.cloudinary.com/dbbj46yzt/image/upload/v1747478520/user_yb3tnn.png'
   }
 ]
 
@@ -76375,7 +76383,7 @@ const stays = [
   }
 ]
 
-function adjustStays(stays, hostOptions, reviewerOptions) {
+function adjustStays(stays, hostOptions) {
   return stays.map(stay => {
     const host = hostOptions[getRandomInt(0, hostOptions.length - 1)]
 
