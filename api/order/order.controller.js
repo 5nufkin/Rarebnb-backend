@@ -54,11 +54,9 @@ export async function updateOrder(req, res) {
 
   try {
     const { updatedOrder, statusChanged } = await orderService.update(order, loggedInUser)
-    console.log('updatedOrder:', updatedOrder)
-    console.log('statusChanged:', statusChanged)
     res.json(updatedOrder)
     if (statusChanged) {
-      socketService.broadcast({ type: 'status-changed', data: updatedOrder, room: updatedOrder.guest._id })
+      socketService.broadcast({ type: 'order-updated', data: updatedOrder, room: updatedOrder.guest._id })
     }
   } catch (err) {
     logger.error('Failed to update order', err)

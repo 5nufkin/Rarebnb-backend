@@ -21,7 +21,6 @@ export const orderService = {
 async function query(filterBy = {}) {
   const criteria = _buildCriteria(filterBy)
   const sort = _buildSort(filterBy)
-
   try {
     const collection = await dbService.getCollection('order')
     var orderCursor = await collection.find(criteria, { sort })
