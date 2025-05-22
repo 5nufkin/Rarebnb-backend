@@ -3,8 +3,8 @@ import { socketService } from '../../services/socket.service.js'
 import { orderService } from './order.service.js'
 
 export async function getOrders(req, res) {
-  const { guestId, hostId } = req.query
-  const filterBy = {}
+  const { guestId, hostId, sortField = '_id', sortDir = -1 } = req.query
+  const filterBy = { sortField, sortDir: +sortDir }
   if (guestId) filterBy.guestId = guestId
   if (hostId) filterBy.hostId = hostId
 
