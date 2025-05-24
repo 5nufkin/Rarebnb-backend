@@ -32,6 +32,9 @@ export async function addOrder(req, res) {
   const { loggedInUser } = req
   const order = req.body
 
+  console.log('loggedInUser:', loggedInUser)
+  console.log('order:', order)
+
   try {
     const addedOrder = await orderService.add(order, loggedInUser)
     const hostId = addedOrder.host._id
